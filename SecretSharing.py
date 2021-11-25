@@ -78,7 +78,7 @@ def generate_shares(n, m, secret):
     return shares
 
 
-def deploy_shares(imageFile='encrypted_image.bmp', t=2, n=4, secret=1234):
+def deploy_shares(imageFile='encrypted_image.bmp', t=3, n=5, secret=4234):
     # imageFile: encrypted image path
     # t: threshold value
     # n: shared key number
@@ -88,7 +88,6 @@ def deploy_shares(imageFile='encrypted_image.bmp', t=2, n=4, secret=1234):
 
     with open(imageFile, "rb") as f:
         image_hash = hashlib.sha256(f.read()).hexdigest()
-        print(image_hash)
 
     # Phase I: Generation of shares
     shares = generate_shares(n, t, secret)
@@ -122,6 +121,19 @@ def deploy_shares(imageFile='encrypted_image.bmp', t=2, n=4, secret=1234):
     return listObj
 
 
+def unify_secret(imageFile='encrypted_image.bmp'):
+    with open(imageFile, "rb") as f:
+        image_hash = hashlib.sha256(f.read()).hexdigest()
+
+    with open('shares_key.json', 'r') as f:
+        data = json.load(f)
+        for i in range(0, len(data)):
+            if(data[i]['image']) == image_hash:
+                shares = data[i]['shares']
+
+    return reconstruct_secret(shares)
+
 
 if __name__ == "__main__":
-    print(deploy_shares())
+    #print(deploy_shares())
+    print(unify_secret())
