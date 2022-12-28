@@ -1,4 +1,4 @@
-function mix = fCat3d(P,ax,ay,az,bx,by,bz,N)
+function X = fCat3d(P,ax,ay,az,bx,by,bz,N)
 
 % A = [1+ax*az*by, az, ay+ax*az+ax*ay*az*by;
 %     bz+ax*by+ax*az*by*bz, az*bz+1, ay*az+ax*ay*az*by*bz+ax*az*bz+ax*ay*by+ax;

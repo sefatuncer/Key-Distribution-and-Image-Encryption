@@ -4,17 +4,11 @@
 clc;
 clear all, close all;
 
-Image = 'lena256.bmp';
+Image = 'Ebrar256.bmp';
 Original = strcat('Images/',Image);
 Cipher = strcat('Encrypted/CNN_',Image);
 
 originalPic = imread(Original);
-% load('Wdl.mat');
-% load('iWdl.mat');
-% load('a.mat'); Al = a;
-% load('b.mat'); Bdl = floor(b);
-% load('d.mat');
-% load('Wcl.mat');
 P = originalPic;
 sz = size(originalPic);
 N = sz(1); % s = 512
@@ -34,16 +28,16 @@ x3 = xyz3(1,:)*3; y3 = xyz3(2,:)*2; z3 = xyz3(3,:);
 % x2 = xyz2(1,:)*.5; y2 = xyz2(2,:)*.4; z2 = xyz2(3,:);
 % x3 = xyz3(1,:)*.3; y3 = xyz3(2,:)*.2; z3 = xyz3(3,:);
 % Definition of variable
-X = zeros(3,N*N);
-maxy1k = zeros(R);
-miny1k = zeros(R);
-y1k = zeros(3,N*N);
-y2k = zeros(3,N*N);
-y31k = zeros(3,N*N);
-y32k = zeros(3,N*N);
-y4k = zeros(3,N*N);
-y5k = zeros(3,N*N);
-y6k = zeros(3,N*N);
+X       = zeros(3,N*N);
+maxy1k  = zeros(R);
+miny1k  = zeros(R);
+y1k     = zeros(3,N*N);
+y2k     = zeros(3,N*N);
+y31k    = zeros(3,N*N);
+y32k    = zeros(3,N*N);
+y4k     = zeros(3,N*N);
+y5k     = zeros(3,N*N);
+y6k     = zeros(3,N*N);
 % Wdl = zeros(3,3,N*N*R);
 % a = zeros(3,N*N*R);
 % b = zeros(3,N*N*R);
@@ -137,10 +131,6 @@ while(r <= R) % Iteration of System
     toc
 end %while(r < R)
 
-% save('C:\Users\Tncr\Documents\MATLAB\maxy1k.mat', 'maxy1k');
-% save('C:\Users\Tncr\Documents\MATLAB\miny1k.mat', 'miny1k');
-% save('C:\Users\Tncr\Documents\MATLAB\Pc.mat', 'encryptPic');
-
 encryptPic = uint8(encryptPic);
 grayPic = rgb2gray(encryptPic);
 red = encryptPic(:,:,1);
@@ -158,34 +148,35 @@ title('Orijinal Görüntü');
 figure(2);
 imshow(encryptPic);
 title('Þifreli Görüntü');
+
+EncryptionValues()
 %
 % subplot(2,3,3);
-figure(3);
-red = reshape(red,1,N*N);
-hist(double(red),255);
-xlabel('Piksel deðeri');
-ylabel('Histogram deðeri');
-title('Kýrmýzý Renk Histogramý');
-%         
-% subplot(2,3,4);
-figure(4);
-green = reshape(green,1,N*N);
-hist(double(green),255);
-xlabel('Piksel deðeri');
-ylabel('Histogram deðeri');
-title('Yeþil Renk Histogramý');
-%         
-% subplot(2,3,5);
-figure(5);
-blue = reshape(blue,1,N*N);
-hist(double(blue),255);
-xlabel('Piksel deðeri');
-ylabel('Histogram deðeri');
-title('Mavi Renk Histogramý');
+% figure(3);
+% red = reshape(red,1,N*N);
+% hist(double(red),255);
+% xlabel('Piksel deðeri');
+% ylabel('Histogram deðeri');
+% title('Kýrmýzý Renk Histogramý');
+% %         
+% % subplot(2,3,4);
+% figure(4);
+% green = reshape(green,1,N*N);
+% hist(double(green),255);
+% xlabel('Piksel deðeri');
+% ylabel('Histogram deðeri');
+% title('Yeþil Renk Histogramý');
+% %         
+% % subplot(2,3,5);
+% figure(5);
+% blue = reshape(blue,1,N*N);
+% hist(double(blue),255);
+% xlabel('Piksel deðeri');
+% ylabel('Histogram deðeri');
+% title('Mavi Renk Histogramý');
 % subplot(2,3,6);
 % encryptPic = reshape(encryptPic,1,3*N*N);
 % hist(double(encryptPic),255);
 % figure(2);
 % red = reshape(red,1,N*N);
 % hist(double(red),255);
-

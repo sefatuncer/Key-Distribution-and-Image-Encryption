@@ -76,7 +76,7 @@ while i<N %x<R % ode45 fonksiyonunun iþlevi ile benzer
 end
 % y1 = y1 * 100; y2 = y2 * 100; y3 = y3 * 100; 
 ChuaValue = [y1; y2; y3];
-save('C:\Users\sefa1\OneDrive\Belgeler\MATLAB\MATLAB_2020_Ocak\Image Encryption\ChuaValue.mat','ChuaValue');
+% save('C:\Users\sefa1\OneDrive\Belgeler\MATLAB\MATLAB_2020_Ocak\Image Encryption\ChuaValue.mat','ChuaValue');
 % plot3(y1,y2,y3);
 % xlabel('x','fontsize',20);
 % ylabel('y','fontsize',20);

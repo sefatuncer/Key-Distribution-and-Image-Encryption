@@ -1,14 +1,23 @@
 %% CHAOS BASED IMAGE DECRYPTION ~~ KAOTÝK TABANLI GÖRÜNTÜ ÞÝFRE ÇÖZME
 % Sefa Tunçer / Bilecik Þeyh Edebali Üniversitesi
-% 20.3.2016
+% 20.3.2020
 clc;
 clear all, close all;
-CipherImage = imread('Encrypted/GrayCatMap_lena256.bmp');
+cipherImageLocation = "Encrypted/enc_image_baboon512.bmp";
+CipherImage = imread(cipherImageLocation);
 % CipherImage = rgb2gray(CipherImage);
 H = size(CipherImage,1); % Görüntünün boy deðeri
 W = size(CipherImage,2); % Görüntünün en deðeri
 N = W; % Gri seviye görüntü boyu
-Km = [1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6]; %Þifreleme anahtarý 128 bit
+
+secret = num2str(py.SecretSharing.unify_secret(cipherImageLocation));
+s1=str2double(secret(1));
+s2=str2double(secret(2));
+s3=str2double(secret(3));
+s4=str2double(secret(4));
+
+% Km = [str2double(secret(1)) str2double(secret(2)) str2double(secret(3)) str2double(secret(4)) 5 6 7 8 9 0 1 2 3 4 5 6]; %Þifreleme anahtarý 128 bit
+Km = [s1 s2 s3 s4 5 6 7 8 9 0 1 2 3 4 5 6];
 kax = (Km(1)*10+Km(2))/100;
 kbx = (Km(3)*10+Km(4))/100;
 % kay = (Km(5)*10+Km(6))/100;

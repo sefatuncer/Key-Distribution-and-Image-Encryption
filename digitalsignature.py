@@ -1,3 +1,4 @@
+import datetime
 import hashlib
 from Crypto.PublicKey import RSA
 from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
@@ -24,7 +25,9 @@ def sign_data(ids, image_hash, verify=False):
                     u = data['Kisilerim'][j]['pqu'][2]
                     # Generate 1024-bit RSA key pair (private + public key)
                     keyPair = RSA.generate(bits=1024)
-                    keyPair.allKeysDef(n, e, d, p, q, u)
+                    keyPair.publickey()
+                    akc = keyPair.allkeyschange(n, e, d, p, q, u)
+                    # keyPair.yazdir()
                     person_image = person_hash[i] + image_hash
                     # print("Person image:", person_image)
                     _hash = SHA256.new(person_image.encode('utf-8'))
@@ -51,13 +54,13 @@ def digital_sign_list():
         ids = data[len(data) - 1]['id']
         image_hash = data[len(data) - 1]['image']
 
-    signatures = sign_data(data, image_hash)
+    signatures = sign_data(ids, image_hash)
 
     listSign = {
         "image": image_hash,
-        "signature": signatures
+        "signature": signatures,
+        "date_time": str(datetime.datetime.today())
     }
-    # print(listSign)
 
     return listSign
 
@@ -78,14 +81,14 @@ def sign_write_blockchain():
             f.write('\n'.encode())
             f.write(json.dumps(listSign).encode())  # Dump the dictionary
             f.write(']'.encode())  # Close the array
-
+    return True
     # print(f"Public key:  (n={hex(keyPair.n)}, e={hex(keyPair.e)})")
     # print(f"Private key: (n={hex(keyPair.n)}, d={hex(keyPair.d)})")
     # Sign the message using the PKCS#1 v1.5 signature scheme (RSASP1)
 
 
 # This function for verify signatures and image
-def verify_signer(imageFile='encrypted_image.bmp'):
+def verify_signer(imageFile='Encrypted/enc_image_Ebrar256.bmp'):
     with open(imageFile, "rb") as f:
         image_hash = hashlib.sha256(f.read()).hexdigest()
 
@@ -104,8 +107,8 @@ def verify_signer(imageFile='encrypted_image.bmp'):
 
 
 if __name__ == '__main__':
-    # sign_write_blockchain()
-    verify_signer()
+    sign_write_blockchain()
+    # verify_signer()
     # Verify invalid PKCS#1 v1.5 signature (RSAVP1)
     # msg = b'A tampered message'
     # hash = SHA256.new(msg)

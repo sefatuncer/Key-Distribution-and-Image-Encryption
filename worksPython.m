@@ -27,3 +27,4 @@ n = 4; t = 3;
 
 % s = py.Signrsa.yazdir();
 shares = py.SecretSharing.deploy_shares("graylevel.bmp",3,4,1234);
+ds = py.DigitalSignature.sign_write_blockchain();

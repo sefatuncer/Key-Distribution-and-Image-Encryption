@@ -1,6 +1,6 @@
-%% CHAOS BASED IMAGE ENCRYPTION ~~ KAOTÝK TABANLI GÖRÜNTÜ ÞÝFRELEME
-% Sefa Tunçer / Bilecik Þeyh Edebali Üniversitesi
-% 26.12.2015
+%% CHAOTIC SYSTEM BASED IMAGE ENCRYPTION
+% Sefa Tunçer / Bilecik Þeyh Edebali University
+% 26.12.2020
 %% ~~~~~ Algoritma Adýmlarý ~~~~~
 % Adým 1: 128 bit key dizisi oluþtur ve 8 gruba böl.
 % Bu 8 grup ax,bx,ay,by,az,bz,Li,S olarak Adým 3'te kullanýlacak.
@@ -15,49 +15,32 @@
 clear all,
 clc
 
-% Matlab Functions
-% s = 5558; % secret number
-% k = 3;
-% n = 6;
-% d = ShamirSharing(s,k,n);
-% c = d(1:4,:);
-% r = ShamirReconstruction(c,k);
-
-% Python Functions
-Km = [1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6]; %Þifreleme anahtarý 128 bit
+% for python functions
+Km = [2 1 3 5 5 6 7 8 9 0 1 2 3 4 5 6]; % enc key 128 bit
 secret = Km(1)*1000+Km(2)*100+Km(3)*10+Km(4);
-n = 4; t = 2;
+n = 5; t = 3; % for (t,n) threshold in SSS
 
+%Shamir's secret key : (sss)
 sss = int2str(secret);
 
 Image = 'baboon256.bmp';
 originalFile = strcat('Images/',Image);
-cipherFile = strcat('Encrypted/GrayCatMap_',Image);
-
+cipherFile = strcat('Encrypted/enc_image_',Image);
 
 I = imread(originalFile);
-I = rgb2gray(I);
-% I = I(:,:,2);
-imwrite(I,'graylevel.bmp');
-% imshow(I);
+% I = rgb2gray(I);
+% imwrite(I,'airplain512.bmp');
 H = size(I,1); % Görüntünün boy deðeri
 W = size(I,2); % Görüntünün en deðeri
 N = W; % Gri seviye görüntü boyu
 
 kax = (Km(1)*10+Km(2))/100;
 kbx = (Km(3)*10+Km(4))/100;
-% kay = (Km(5)*10+Km(6))/100;
-% kby = (Km(7)*10+Km(8))/100;
-% kaz = Km(9)*10+Km(10);
-% kbz = Km(11)*10+Km(12);
-% kl  = Km(13)*10+Km(14);
-% ks  = Km(15)*10+Km(16);
 cax = kax*8.4+20;
 x0h = kbx*80-40;
 y0h = kax*80-40;
 z0h = kbx*60;
-xyz1 = fChen(500,x0h,y0h,z0h,cax); % Chen kaotik sistemi
-% x1 = xyz1(1,:); y1 = xyz1(2,:); 
+xyz1 = fChen(500,x0h,y0h,z0h,cax); % Chen chaotic system
 z1 = xyz1(3,:);
 
 Li = z1(100)/60; % Ondalýklý sayý / x(1) Logistic Map giriþ deðeri
@@ -85,52 +68,68 @@ Iyeni = fInvThreeDimension(I,W,H,cubeSize,mixcube1,mixcube2,mixcube3,mixcube4,mi
 Iyeni = double(Iyeni);
 x = zeros();
 x(1) = Li;
-for k=2:N*N % Chaotic Logistic Map deðerleri üret
+for k=2:N*N % Chaotic Logistic Map values create
     x(k) = 4*x(k-1)*(1-x(k-1)); % 0.2-0.8 aralýðýnda olmasý gerekli(0.5 bad point)
 end
 min_x = min(x); max_x=max(x);
 Q = zeros();
-for k=1:N*N % fi deðeri:Normalizasyon 0.2-0.8 aralýðý
+for k=1:N*N % fi value: Normalization between 0.2-0.8
     Q(k) = (x(k)-min_x)/(max_x-min_x)*(0.8-0.2)+0.2;
     Q(k) = floor(Q(k)*400-75); % Digitize edilmiþ hali
 end
 
 C = zeros();
 C(1) = S;
-for k=2:N*N % XOR iþlemi
+for k=2:N*N % XOR operation
     C(k) = bitxor(bitxor(Q(k),mod(Iyeni(k)+Q(k),256)),C(k-1)); % N (color level 256)
 end
-toc % zaman
+toc % finish time
 
 CipherImage = reshape(C,W,H); % W*H boyutuna dönüþtür.
 CipherImage = uint8(CipherImage);
 
 imwrite(CipherImage,cipherFile);
 
-% Call Python Function for Key Sharing
+% Call python function for key sharing
 shares = py.SecretSharing.deploy_shares(cipherFile, t, n, secret);
-disp(shares)
+disp(shares);
+% ds = py.DigitalSignature.sign_write_blockchain();
 
+figure(1); imshow(I);
+title('Original Image');
 
+figure(2); imshow(CipherImage);
+title('Cipher Image');
+
+figure(3); imhist(I);
+title('Original Image Histogram');
+xlabel('Pixel value');
+ylabel('Histogram value');
+
+figure(4); imhist(CipherImage);
+ylim([0 2000]);
+title('Cipher Image Histogram');
+xlabel('Pixel value');
+ylabel('Histogram value');
 
 
 
 % figure(1);
 % imshow(I);
-% title('Orijinal Görüntü');
+% title('Original Image');
 % figure(2);
 % imshow(CipherImage);
-% title('Þifreli Görüntü');
+% title('Cipher Image');
 % figure(3);
 % imhist(CipherImage);
-% title('Þifreli Görüntü Histogramý');
-% xlabel('Piksel deðeri');
-% ylabel('Histogram deðeri');
+% title('Cipher Image Histogram');
+% xlabel('Pixel value');
+% ylabel('Histogram value');
 % figure(4);
 % imhist(I);% Orjinal image
-% title('Orijinal Görüntü Histogramý');
-% xlabel('Piksel deðeri');
-% ylabel('Histogram deðeri');
+% title('Original Image Histogram');
+% xlabel('Pixel value');
+% ylabel('Histogram value');
 
 % % SHA256 hash oluþtur
 % [m, n, ~] = size(CipherImage);      % Gives rows, columns, ignores number of channels

@@ -9,11 +9,7 @@ FIELD_SIZE = 10 ** 5
 
 def reconstruct_secret(shares):
     """
-    Combines individual shares (points on graph)
-    using Lagranges interpolation.
-
-    `shares` is a list of points (x, y) belonging to a
-    polynomial with a constant of our key.
+    `shares` is a list of points (x, y)
     """
     sums = 0
     prod_arr = []
@@ -34,10 +30,6 @@ def reconstruct_secret(shares):
 
 
 def polynom(x, coefficients):
-    """
-    This generates a single point on the graph of given polynomial
-    in `x`. The polynomial is given by the list of `coefficients`.
-    """
     point = 0
     # Loop through reversed list, so that indices from enumerate match the
     # actual coefficient indices
@@ -64,10 +56,6 @@ def coeff(t, secret):
 
 
 def generate_shares(n, m, secret):
-    """
-    Split given `secret` into `n` shares with minimum threshold
-    of `m` shares to recover this `secret`, using SSS algorithm.
-    """
     coefficients = coeff(m, secret)
     shares = []
 
@@ -78,7 +66,7 @@ def generate_shares(n, m, secret):
     return shares
 
 
-def deploy_shares(imageFile='encrypted_image.bmp', t=3, n=5, secret=4234):
+def deploy_shares(imageFile='Encrypted/enc_image_baboon256.bmp', t=3, n=5, secret=2319):
     # imageFile: encrypted image path
     # t: threshold value
     # n: shared key number
@@ -90,10 +78,9 @@ def deploy_shares(imageFile='encrypted_image.bmp', t=3, n=5, secret=4234):
         image_hash = hashlib.sha256(f.read()).hexdigest()
 
     # Phase I: Generation of shares
-    shares = generate_shares(n, t, secret)
+    shares = generate_shares(int(n), int(t), int(secret))
     # print(f'Shares: {", ".join(str(share) for share in shares)}')
 
-    # Json files open, read and write data
     with open('person.json', ) as f:
         json_data = json.load(f)
 
@@ -121,7 +108,7 @@ def deploy_shares(imageFile='encrypted_image.bmp', t=3, n=5, secret=4234):
     return listObj
 
 
-def unify_secret(imageFile='encrypted_image.bmp'):
+def unify_secret(imageFile):
     with open(imageFile, "rb") as f:
         image_hash = hashlib.sha256(f.read()).hexdigest()
 
@@ -130,7 +117,7 @@ def unify_secret(imageFile='encrypted_image.bmp'):
         for i in range(0, len(data)):
             if(data[i]['image']) == image_hash:
                 shares = data[i]['shares']
-
+    print(shares)
     return reconstruct_secret(shares)
 
 

@@ -13,10 +13,10 @@
 % I: Gri seviye görüntü
 % W: En H: Boy
 % cube: 
-function [c1 c2 c3 c4 c5 c6 c7 root] = fThreeDimension(I,W,H,cubeSize)
+function [c1,c2,c3,c4,c5,c6,c7,root] = fThreeDimension(I,W,H,cubeSize)
 elemansayisi = numel(cubeSize);
 cubeSize = floor(uint8(cubeSize.^(1/3)));
-% 
+
 c1 = zeros(); % Küp 1
 c2 = zeros(); % Küp 2
 c3 = zeros();

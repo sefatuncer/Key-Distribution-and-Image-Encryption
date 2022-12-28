@@ -5,7 +5,7 @@ function X = fCat(y,N)
 p=6;
 q=4;
 X = zeros();
-it = 1;
+% it = 1;
 
 for k=1:3
     for i=1:N
@@ -13,7 +13,7 @@ for k=1:3
             newi = mod(((i-1) + p*(j-1)),N)+1;     % get new i coord 
             newj = mod((q*(i-1) + (p*q+1)*(j-1)),N)+1; % get new j coord 
             X(newi,newj,k) = y(i,j,k);
-            it=it+1;
+%             it=it+1;
         end 
     end
 end
