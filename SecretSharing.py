@@ -3,9 +3,9 @@ import json
 import os.path
 import random
 from decimal import Decimal
+% Yu Wue's algorithm is used some pieces of code.
 
 FIELD_SIZE = 10 ** 5
-
 
 def reconstruct_secret(shares):
     """
