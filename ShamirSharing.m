@@ -1,4 +1,5 @@
 function d = ShamirSharing(s,k,n)
+% Yu Wue's algorithm is used
 % -------------------------------------------------------------------------
 % FUNCRION: Shamir's Secret Sharing Algorithm
 % also known as (k,n) threshold scheme
@@ -18,7 +19,7 @@ function d = ShamirSharing(s,k,n)
 % 
 % -------------------------------------------------------------------------
 % Shamir's Paper: "How to share a secret", 
-% Communications of the ACM 22(11): 612–613, doi:10.1145/359168.359176
+% Communications of the ACM 22(11): 612â€“613, doi:10.1145/359168.359176
 % -------------------------------------------------------------------------
 % Written by:
 % Yue Wu, ywu03@ece.tufts.edu
